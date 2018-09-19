@@ -7,5 +7,6 @@ interface MainActivityView {
     fun showLoading()
     fun hideLoading()
     fun showTeamList(data: List<Team>)
-    fun showEventList(data: List<Event>)
+    fun showNextEventList(data: List<Event>)
+    fun showLastEventList(data: List<Event>)
 }

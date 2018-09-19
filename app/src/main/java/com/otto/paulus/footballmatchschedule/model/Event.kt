@@ -6,14 +6,14 @@ data class Event (
     @SerializedName("idEvent")
     var eventId: String? = null,
 
-    @SerializedName("dateEvent")
+    @SerializedName("strDate")
     var eventDate: String? = null,
 
     // Home
     @SerializedName("strHomeTeam")
     var homeTeam: String? = null,
 
-    @SerializedName("intAwayScore")
+    @SerializedName("intHomeScore")
     var homeScore: String? = null,
 
     // Away

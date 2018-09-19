@@ -1,5 +1,6 @@
 package com.otto.paulus.footballmatchschedule.layout
 
+import android.support.design.widget.BottomNavigationView
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -14,44 +15,69 @@ import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.*
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.support.v4.swipeRefreshLayout
+import android.support.v7.widget.DividerItemDecoration
+import android.widget.FrameLayout
+import com.otto.paulus.footballmatchschedule.R
+import org.jetbrains.anko.design.bottomNavigationView
+import org.jetbrains.anko.design.coordinatorLayout
+
 
 class MainActivityUI : AnkoComponent<MainActivity> {
-    lateinit var listTeam: RecyclerView
+    lateinit var listLastEvents: RecyclerView
+    //lateinit var listNextEvents: RecyclerView
     lateinit var progressBar: ProgressBar
     lateinit var swipeRefresh: SwipeRefreshLayout
-    lateinit var spinner: Spinner
+    //lateinit var spinner: Spinner
+    lateinit var bottomNavigation: BottomNavigationView
+    lateinit var frameLayout: FrameLayout
 
     override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
-        linearLayout {
-            lparams (width = matchParent, height = wrapContent)
-            orientation = LinearLayout.VERTICAL
-            topPadding = dip(16)
-            leftPadding = dip(16)
-            rightPadding = dip(16)
 
-            spinner = spinner ()
+        relativeLayout {
+            lparams (width = matchParent, height = matchParent)
+            topPadding = dip(16)
+
+            //spinner = spinner ()
+
+            bottomNavigation = bottomNavigationView {
+                id = Id.bottomNavigation
+                inflateMenu(R.menu.navigation)
+            }.lparams{
+                width = matchParent
+                height = wrapContent
+                alignParentBottom()
+            }
+
             swipeRefresh = swipeRefreshLayout {
                 setColorSchemeResources(colorAccent,
                         android.R.color.holo_green_light,
                         android.R.color.holo_orange_light,
                         android.R.color.holo_red_light)
+                frameLayout = frameLayout {
+                    relativeLayout{
+                        lparams (width = matchParent, height = matchParent)
 
-                relativeLayout{
-                    lparams (width = matchParent, height = wrapContent)
+                        listLastEvents = recyclerView {
+                            lparams (width = matchParent, height = wrapContent)
+                            layoutManager = LinearLayoutManager(ctx)
+                            addItemDecoration(DividerItemDecoration(ctx, DividerItemDecoration.VERTICAL))
+                        }
 
-                    listTeam = recyclerView {
-                        lparams (width = matchParent, height = wrapContent)
-                        layoutManager = LinearLayoutManager(ctx)
-                    }
-
-                    progressBar = progressBar {
-                    }.lparams{
-                        centerHorizontally()
+                        progressBar = progressBar {
+                        }.lparams{
+                            centerInParent()
+                        }
                     }
                 }
+            }.lparams {
+                above(bottomNavigation)
             }
+
         }
     }
 
-
+    companion object Id {
+        val bottomNavigation = 1
+    }
 }
+

@@ -1,34 +1,66 @@
 package com.otto.paulus.footballmatchschedule.adapter
 
+import android.graphics.Typeface
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
+import com.otto.paulus.footballmatchschedule.layout.MatchUI
 import com.otto.paulus.footballmatchschedule.layout.TeamUI
-import com.otto.paulus.footballmatchschedule.model.Team
-import com.squareup.picasso.Picasso
+import com.otto.paulus.footballmatchschedule.model.Event
+import com.otto.paulus.footballmatchschedule.util.*
 import org.jetbrains.anko.AnkoContext
+import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.find
 
-class MainActivityAdapter(private val teams: List<Team>): RecyclerView.Adapter<MainActivityAdapter.TeamViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
-        return TeamViewHolder(TeamUI().createView(AnkoContext.create(parent.context, parent)))
+class MainActivityAdapter(private val events: List<Event>, private val listener: (Event) -> Unit): RecyclerView.Adapter<MainActivityAdapter.MatchViewHolder>(),AnkoLogger {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MatchViewHolder {
+        return MatchViewHolder(MatchUI().createView(AnkoContext.create(parent.context, parent)))
     }
 
-    override fun getItemCount(): Int = teams.size
+    override fun getItemCount(): Int = events.size
 
-    override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
-        holder.bindItem(teams[position])
+    override fun onBindViewHolder(holder: MatchViewHolder, position: Int) {
+        holder.bindItem(events[position], listener)
     }
 
-    class TeamViewHolder(view: View) : RecyclerView.ViewHolder(view){
-        private val teamBadge: ImageView = view.find(TeamUI.badge)
-        private val teamName: TextView = view.find(TeamUI.name)
+    class MatchViewHolder(view: View) : RecyclerView.ViewHolder(view), AnkoLogger {
+        private val eventDate: TextView = view.find(MatchUI.eventDate)
+        private val homeTeamName: TextView = view.find(MatchUI.homeTeamName)
+        private val homeTeamScore: TextView = view.find(MatchUI.homeTeamScore)
+        private val awayTeamScore: TextView = view.find(MatchUI.awayTeamScore)
+        private val awayTeamName: TextView = view.find(MatchUI.awayTeamName)
 
-        fun bindItem(teams: Team) {
-            Picasso.get().load(teams.teamBadge).into(teamBadge)
-            teamName.text = teams.teamName
+        fun bindItem(events: Event, listener: (Event) -> Unit) {
+            eventDate.text = events.eventDate?.formatDate()
+
+            homeTeamName.text = events.homeTeam
+            homeTeamScore.text = events.homeScore
+            awayTeamScore.text = events.awayScore
+            awayTeamName.text = events.awayTeam
+
+            val homeScore = events.homeScore?.toInt()?:0
+            val awayScore = events.awayScore?.toInt()?:0
+
+            if(homeScore-awayScore>0) {
+                homeTeamName.bold()
+                awayTeamName.normal()
+            }
+            else {
+                if(homeScore-awayScore<0) {
+                    homeTeamName.normal()
+                    awayTeamName.bold()
+                }
+                else {
+                    homeTeamName.normal()
+                    awayTeamName.normal()
+                }
+            }
+
+            itemView.setOnClickListener {
+                listener(events)
+            }
+
         }
     }
 }

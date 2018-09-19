@@ -27,6 +27,21 @@ class MainActivityPresenter(private val view: MainActivityView,
         }
     }
 
+    fun getLast15EventsList(leagueId: Int?) {
+        view.showLoading()
+        doAsync {
+            val data = gson.fromJson(apiRepository
+                    .doRequest(TheSportDBApi.getLast15Events(leagueId)),
+                    EventResponse::class.java
+            )
+
+            uiThread {
+                view.hideLoading()
+                view.showLastEventList(data.events)
+            }
+        }
+    }
+
     fun getNext15EventsList(leagueId: Int?) {
         view.showLoading()
         doAsync {
@@ -37,7 +52,7 @@ class MainActivityPresenter(private val view: MainActivityView,
 
             uiThread {
                 view.hideLoading()
-                view.showEventList(data.events)
+                view.showNextEventList(data.events)
             }
         }
     }
