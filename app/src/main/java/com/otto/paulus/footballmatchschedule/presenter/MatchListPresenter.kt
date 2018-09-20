@@ -9,9 +9,9 @@ import com.otto.paulus.footballmatchschedule.view.MainActivityView
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-class MainActivityPresenter(private val view: MainActivityView,
-                            private val apiRepository: ApiRepository,
-                            private val gson: Gson) {
+class MatchListPresenter(private val view: MainActivityView,
+                         private val apiRepository: ApiRepository,
+                         private val gson: Gson) {
     fun getTeamList(league: String?) {
         view.showLoading()
         doAsync {
@@ -22,7 +22,7 @@ class MainActivityPresenter(private val view: MainActivityView,
 
             uiThread {
                 view.hideLoading()
-                view.showTeamList(data.teams)
+                //view.showTeamList(data.teams)
             }
         }
     }

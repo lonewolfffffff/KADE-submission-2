@@ -3,8 +3,6 @@ package com.otto.paulus.footballmatchschedule.layout
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import org.jetbrains.anko.AnkoComponent
-import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.*
 
 class TeamUI : AnkoComponent<ViewGroup> {

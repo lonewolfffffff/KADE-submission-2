@@ -6,7 +6,6 @@ import com.otto.paulus.footballmatchschedule.model.Team
 interface MainActivityView {
     fun showLoading()
     fun hideLoading()
-    fun showTeamList(data: List<Team>)
     fun showNextEventList(data: List<Event>)
     fun showLastEventList(data: List<Event>)
 }

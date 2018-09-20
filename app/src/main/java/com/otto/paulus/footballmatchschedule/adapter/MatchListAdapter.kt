@@ -1,21 +1,21 @@
 package com.otto.paulus.footballmatchschedule.adapter
 
-import android.graphics.Typeface
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.otto.paulus.footballmatchschedule.layout.MatchUI
-import com.otto.paulus.footballmatchschedule.layout.TeamUI
+import com.otto.paulus.footballmatchschedule.layout.MatchListItemUI
 import com.otto.paulus.footballmatchschedule.model.Event
-import com.otto.paulus.footballmatchschedule.util.*
+import com.otto.paulus.footballmatchschedule.util.bold
+import com.otto.paulus.footballmatchschedule.util.formatDate
+import com.otto.paulus.footballmatchschedule.util.normal
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.find
 
-class MainActivityAdapter(private val events: List<Event>, private val listener: (Event) -> Unit): RecyclerView.Adapter<MainActivityAdapter.MatchViewHolder>(),AnkoLogger {
+class MatchListAdapter(private val events: List<Event>, private val listener: (Event) -> Unit): RecyclerView.Adapter<MatchListAdapter.MatchViewHolder>(),AnkoLogger {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MatchViewHolder {
-        return MatchViewHolder(MatchUI().createView(AnkoContext.create(parent.context, parent)))
+        return MatchViewHolder(MatchListItemUI().createView(AnkoContext.create(parent.context, parent)))
     }
 
     override fun getItemCount(): Int = events.size
@@ -25,11 +25,11 @@ class MainActivityAdapter(private val events: List<Event>, private val listener:
     }
 
     class MatchViewHolder(view: View) : RecyclerView.ViewHolder(view), AnkoLogger {
-        private val eventDate: TextView = view.find(MatchUI.eventDate)
-        private val homeTeamName: TextView = view.find(MatchUI.homeTeamName)
-        private val homeTeamScore: TextView = view.find(MatchUI.homeTeamScore)
-        private val awayTeamScore: TextView = view.find(MatchUI.awayTeamScore)
-        private val awayTeamName: TextView = view.find(MatchUI.awayTeamName)
+        private val eventDate: TextView = view.find(MatchListItemUI.eventDate)
+        private val homeTeamName: TextView = view.find(MatchListItemUI.homeTeamName)
+        private val homeTeamScore: TextView = view.find(MatchListItemUI.homeTeamScore)
+        private val awayTeamScore: TextView = view.find(MatchListItemUI.awayTeamScore)
+        private val awayTeamName: TextView = view.find(MatchListItemUI.awayTeamName)
 
         fun bindItem(events: Event, listener: (Event) -> Unit) {
             eventDate.text = events.eventDate?.formatDate()

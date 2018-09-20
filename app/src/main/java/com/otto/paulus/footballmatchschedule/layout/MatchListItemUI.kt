@@ -7,11 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.otto.paulus.footballmatchschedule.R
-import org.jetbrains.anko.AnkoComponent
-import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.*
 
-class MatchUI : AnkoComponent<ViewGroup> {
+class MatchListItemUI : AnkoComponent<ViewGroup> {
     override fun createView(ui: AnkoContext<ViewGroup>): View = with(ui) {
 
         linearLayout {
