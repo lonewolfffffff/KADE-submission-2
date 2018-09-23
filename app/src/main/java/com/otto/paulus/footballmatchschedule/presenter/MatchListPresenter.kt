@@ -5,28 +5,15 @@ import com.otto.paulus.footballmatchschedule.api.ApiRepository
 import com.otto.paulus.footballmatchschedule.api.TheSportDBApi
 import com.otto.paulus.footballmatchschedule.model.EventResponse
 import com.otto.paulus.footballmatchschedule.model.TeamResponse
-import com.otto.paulus.footballmatchschedule.view.MainActivityView
+import com.otto.paulus.footballmatchschedule.view.MatchListView
+import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.info
 import org.jetbrains.anko.uiThread
 
-class MatchListPresenter(private val view: MainActivityView,
+class MatchListPresenter(private val view: MatchListView,
                          private val apiRepository: ApiRepository,
-                         private val gson: Gson) {
-    fun getTeamList(league: String?) {
-        view.showLoading()
-        doAsync {
-            val data = gson.fromJson(apiRepository
-                    .doRequest(TheSportDBApi.getTeams(league)),
-                    TeamResponse::class.java
-            )
-
-            uiThread {
-                view.hideLoading()
-                //view.showTeamList(data.teams)
-            }
-        }
-    }
-
+                         private val gson: Gson):AnkoLogger {
     fun getLast15EventsList(leagueId: Int?) {
         view.showLoading()
         doAsync {
@@ -37,7 +24,7 @@ class MatchListPresenter(private val view: MainActivityView,
 
             uiThread {
                 view.hideLoading()
-                view.showLastEventList(data.events)
+                view.showEventList(data.events)
             }
         }
     }
@@ -52,7 +39,7 @@ class MatchListPresenter(private val view: MainActivityView,
 
             uiThread {
                 view.hideLoading()
-                view.showNextEventList(data.events)
+                view.showEventList(data.events)
             }
         }
     }

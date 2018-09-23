@@ -26,6 +26,7 @@ class MatchListUI:AnkoComponent<MatchListFragment> {
             topPadding = dip(16)
             leftPadding = dip(3)
             rightPadding = dip(3)
+            hasNestedScrollingParent()
             //spinner = spinner ()
 
             bottomNavigation = bottomNavigationView {
@@ -55,6 +56,7 @@ class MatchListUI:AnkoComponent<MatchListFragment> {
                     lparams (width = matchParent, height = wrapContent)
                     layoutManager = LinearLayoutManager(ctx)
                     addItemDecoration(DividerItemDecoration(ctx, DividerItemDecoration.VERTICAL))
+
                 }
 
             }.lparams {

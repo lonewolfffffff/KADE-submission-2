@@ -4,12 +4,10 @@
     <item
         android:id="@+id/navigate_prev_match"
         android:icon="@drawable/ic_prev_match"
-        android:title="Prev Match"
-        android:enabled="true"/>
+        android:title="Prev Match"/>
 
     <item
         android:id="@+id/navigate_next_match"
         android:icon="@drawable/ic_next_match"
-        android:title="Next Match"
-        android:enabled="true"/>
+        android:title="Next Match"/>
 </menu>

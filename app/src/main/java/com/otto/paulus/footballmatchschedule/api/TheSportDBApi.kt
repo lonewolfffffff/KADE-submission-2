@@ -2,24 +2,16 @@ package com.otto.paulus.footballmatchschedule.api
 
 import android.net.Uri
 import com.otto.paulus.footballmatchschedule.BuildConfig
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 
-object TheSportDBApi {
-    val sportDBApiBuilder:Uri.Builder = Uri.parse(BuildConfig.BASE_URL).buildUpon()
-            .appendPath("api")
-            .appendPath("v1")
-            .appendPath("json")
-            .appendPath(BuildConfig.TSDB_API_KEY)
-
-    fun getTeams(league: String?): String {
-        return sportDBApiBuilder
-                .appendPath("search_all_teams.php")
-                .appendQueryParameter("l", league)
-                .build()
-                .toString()
-    }
-
+object TheSportDBApi:AnkoLogger {
     fun getLast15Events(leagueId: Int?): String {
-        return sportDBApiBuilder
+        return Uri.parse(BuildConfig.BASE_URL).buildUpon()
+                .appendPath("api")
+                .appendPath("v1")
+                .appendPath("json")
+                .appendPath(BuildConfig.TSDB_API_KEY)
                 .appendPath("eventspastleague.php")
                 .appendQueryParameter("id", leagueId.toString())
                 .build()
@@ -27,7 +19,11 @@ object TheSportDBApi {
     }
 
     fun getNext15Events(leagueId: Int?): String {
-        return sportDBApiBuilder
+        return Uri.parse(BuildConfig.BASE_URL).buildUpon()
+                .appendPath("api")
+                .appendPath("v1")
+                .appendPath("json")
+                .appendPath(BuildConfig.TSDB_API_KEY)
                 .appendPath("eventsnextleague.php")
                 .appendQueryParameter("id", leagueId.toString())
                 .build()
@@ -35,7 +31,11 @@ object TheSportDBApi {
     }
 
     fun getEventDetail(eventId: Int?): String {
-        return sportDBApiBuilder
+        return Uri.parse(BuildConfig.BASE_URL).buildUpon()
+                .appendPath("api")
+                .appendPath("v1")
+                .appendPath("json")
+                .appendPath(BuildConfig.TSDB_API_KEY)
                 .appendPath("lookupevent.php")
                 .appendQueryParameter("id", eventId.toString())
                 .build()
