@@ -9,7 +9,6 @@ import android.widget.ImageView
 
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
-import kotlinx.android.synthetic.main.activity_detail.*
 
 class HomeTeamBadgeBehavior(context: Context, attrs: AttributeSet) : CoordinatorLayout.Behavior<ImageView>(context, attrs),AnkoLogger {
     override fun layoutDependsOn(parent: CoordinatorLayout, child: ImageView, dependency: View): Boolean {

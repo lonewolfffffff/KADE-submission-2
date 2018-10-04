@@ -10,6 +10,7 @@ import com.otto.paulus.footballmatchschedule.model.Event
 import com.otto.paulus.footballmatchschedule.model.EventDetail
 import com.otto.paulus.footballmatchschedule.model.Team
 import com.otto.paulus.footballmatchschedule.presenter.MatchDetailPresenter
+import com.otto.paulus.footballmatchschedule.util.formatDate
 import com.otto.paulus.footballmatchschedule.util.invisible
 import com.otto.paulus.footballmatchschedule.util.parse
 import com.otto.paulus.footballmatchschedule.util.visible
@@ -45,6 +46,10 @@ class DetailActivity: AppCompatActivity(), MatchDetailView, AppBarLayout.OnOffse
         when(verticalOffset) {
             // fade ins
             in -240..-200 -> {
+                tvMatchDateToolbar.visible()
+                tvMatchDateToolbar.animate().alpha((200 - verticalOffset)/40f)
+                tvMatchDateToolbar.animate().scaleX((verticalOffset+200)/-40f)
+                tvMatchDateToolbar.animate().scaleY((verticalOffset+200)/-40f)
                 ivHomeBadgeToolbar.visible()
                 ivHomeBadgeToolbar.animate().alpha((200 - verticalOffset)/40f)
                 ivHomeBadgeToolbar.animate().scaleX((verticalOffset+200)/-40f)
@@ -58,7 +63,10 @@ class DetailActivity: AppCompatActivity(), MatchDetailView, AppBarLayout.OnOffse
                 ivAwayBadgeToolbar.animate().scaleX((verticalOffset+200)/-40f)
                 ivAwayBadgeToolbar.animate().scaleY((verticalOffset+200)/-40f)
             }
+            // disappear
             in -119..0 -> {
+                tvMatchDateToolbar.alpha = 0f
+                tvMatchDateToolbar.invisible()
                 ivHomeBadgeToolbar.alpha = 0f
                 ivHomeBadgeToolbar.invisible()
                 tvScoreToolbar.alpha = 0f
@@ -78,6 +86,9 @@ class DetailActivity: AppCompatActivity(), MatchDetailView, AppBarLayout.OnOffse
     }
 
     override fun showDetailEvent(match: EventDetail) {
+        tvMatchDate.text = match.eventDate?.formatDate()
+        tvMatchDateToolbar.text = match.eventDate?.formatDate()
+
         tvHomeTeamName.text = match.homeTeam
         tvScore.text = match.homeScore + " - " + match.awayScore
         tvScoreToolbar.text = match.homeScore + " - " + match.awayScore

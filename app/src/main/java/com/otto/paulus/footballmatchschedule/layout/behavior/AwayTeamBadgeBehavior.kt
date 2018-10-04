@@ -16,7 +16,7 @@ class AwayTeamBadgeBehavior(context: Context, attrs: AttributeSet) : Coordinator
     }
 
     override fun onDependentViewChanged(parent: CoordinatorLayout, child: ImageView, dependency: View): Boolean {
-        //TODO : sama seperti HomeTeam, lebih keren kalo ganti ke exponential formula
+        //TODO : sama seperti HomeTeam, lebih bagus jika menggunakan exponential formula
         child.alpha = dependency.y/250
         info(dependency.x)
         return false
