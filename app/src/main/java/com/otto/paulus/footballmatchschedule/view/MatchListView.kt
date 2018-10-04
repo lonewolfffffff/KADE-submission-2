@@ -1,7 +1,6 @@
 package com.otto.paulus.footballmatchschedule.view
 
 import com.otto.paulus.footballmatchschedule.model.Event
-import com.otto.paulus.footballmatchschedule.model.Team
 
 interface MatchListView {
     fun showLoading()

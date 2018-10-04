@@ -32,6 +32,7 @@ class MatchListAdapter(private val events: List<Event>, private val listener: (E
         private val awayTeamName: TextView = view.find(MatchListItemUI.awayTeamName)
 
         fun bindItem(events: Event, listener: (Event) -> Unit) {
+
             eventDate.text = events.eventDate?.formatDate()
 
             homeTeamName.text = events.homeTeam

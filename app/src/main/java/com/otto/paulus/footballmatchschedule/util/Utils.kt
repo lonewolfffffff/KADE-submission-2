@@ -31,6 +31,10 @@ fun String.formatDate(fromDateFormat:String="dd/MM/yy", toDateFormat:String = "E
     return dateFormatter.format(date)
 }
 
+fun String.parse(delimiter: String = ";", replacement: String = System.getProperty("line.separator") ) : String {
+    return this.replace(delimiter, replacement)
+}
+
 inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
     beginTransaction().func().commit()
 }

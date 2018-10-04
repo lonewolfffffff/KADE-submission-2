@@ -14,17 +14,12 @@ import com.google.gson.Gson
 import com.otto.paulus.footballmatchschedule.R
 import com.otto.paulus.footballmatchschedule.adapter.MatchListAdapter
 import com.otto.paulus.footballmatchschedule.api.ApiRepository
-import com.otto.paulus.footballmatchschedule.layout.MatchListUI
 import com.otto.paulus.footballmatchschedule.model.Event
 import com.otto.paulus.footballmatchschedule.presenter.MatchListPresenter
 import com.otto.paulus.footballmatchschedule.util.*
 import com.otto.paulus.footballmatchschedule.view.MatchListView
-import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.find
-import org.jetbrains.anko.info
 import org.jetbrains.anko.support.v4.onRefresh
-import kotlinx.android.synthetic.main.fragment_matchlist.*
 
 class MatchListFragment : Fragment(),MatchListView, AnkoLogger {
     private val leagueId:Int = 4328
@@ -47,12 +42,9 @@ class MatchListFragment : Fragment(),MatchListView, AnkoLogger {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val matchListUI = MatchListUI()
-        val matchList = matchListUI.createView(AnkoContext.create(inflater.context,this,false))
-        val bottomNavigation:BottomNavigationView = matchList.find(matchListUI.bottomNavigation.id)
-
-        bottomNavigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
-
+        val rootView = inflater.inflate(R.layout.fragment_matchlist, container, false)
+        val bottomNavigationView:BottomNavigationView = rootView.findViewById(R.id.navMatch)
+        bottomNavigationView.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener {item ->
             when (item.itemId) {
                 R.id.navigate_prev_match -> {
                     presenter.getLast15EventsList(leagueId)
@@ -66,25 +58,25 @@ class MatchListFragment : Fragment(),MatchListView, AnkoLogger {
             return@OnNavigationItemSelectedListener false
         })
 
-        progressBar = matchList.find(matchListUI.progressBar.id)
-        swipeRefresh = matchList.find(matchListUI.swipeRefresh.id)
+        progressBar = rootView.findViewById(R.id.progressBar)
+        swipeRefresh = rootView.findViewById(R.id.swipeRefreshLayout)
         swipeRefresh.onRefresh {
 
         }
-        eventsList = matchList.find(matchListUI.eventsList.id)
 
         adapter = MatchListAdapter(events) {
             val match = events.get(events.indexOf(it))
             listener?.onMatchListFragmentInteraction(match.eventId);
         }
+        eventsList = rootView.findViewById(R.id.rvMatchList)
         eventsList.adapter = adapter
 
-        return matchList
+        return rootView
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         presenter.getLast15EventsList(leagueId)
     }
 

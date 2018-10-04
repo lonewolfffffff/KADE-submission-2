@@ -9,14 +9,16 @@ import com.otto.paulus.footballmatchschedule.layout.MainActivityUI
 import com.otto.paulus.footballmatchschedule.util.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.setContentView
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MatchListFragment.OnFragmentInteractionListener, MatchDetailFragment.OnFragmentInteractionListener, AnkoLogger {
     private val mainActivity: MainActivityUI = MainActivityUI()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportActionBar?.hide()
+        //supportActionBar?.hide()
         //mainActivity.setContentView(this)
+
         setContentView(R.layout.activity_main)
         addFragment(MatchListFragment(), R.id.framelayout)
     }
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity(), MatchListFragment.OnFragmentInteractio
     }
 
     override fun onFragmentInteraction(coba: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
 }
