@@ -1,35 +1,47 @@
 package com.otto.paulus.footballmatchschedule.activity
 
 import android.os.Bundle
+import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import com.otto.paulus.footballmatchschedule.R
-import com.otto.paulus.footballmatchschedule.activity.fragment.MatchDetailFragment
 import com.otto.paulus.footballmatchschedule.activity.fragment.MatchListFragment
 import com.otto.paulus.footballmatchschedule.layout.MainActivityUI
+import com.otto.paulus.footballmatchschedule.model.Event
 import com.otto.paulus.footballmatchschedule.util.*
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.setContentView
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.info
+import org.jetbrains.anko.startActivity
 
-class MainActivity : AppCompatActivity(), MatchListFragment.OnFragmentInteractionListener, MatchDetailFragment.OnFragmentInteractionListener, AnkoLogger {
-    private val mainActivity: MainActivityUI = MainActivityUI()
+class MainActivity : AppCompatActivity(), MatchListFragment.OnFragmentInteractionListener, AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //supportActionBar?.hide()
-        //mainActivity.setContentView(this)
-
         setContentView(R.layout.activity_main)
-        addFragment(MatchListFragment(), R.id.framelayout)
+
+        navMatch.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigate_prev_match -> {
+                    replaceFragment(MatchListFragment.newInstance(true), framelayout.id)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigate_next_match -> {
+                    replaceFragment(MatchListFragment.newInstance(isPrevMatch = false), framelayout.id)
+                    return@OnNavigationItemSelectedListener true
+                }
+            }
+            return@OnNavigationItemSelectedListener false
+        })
+
+        addFragment(MatchListFragment(), framelayout.id)
     }
 
-    override fun onMatchListFragmentInteraction(matchId: String?) {
-        replaceFragment(MatchDetailFragment.newInstance(matchId!!),R.id.framelayout) {
-            addToBackStack(null)
-        }
-    }
-
-    override fun onFragmentInteraction(coba: String) {
+    override fun onMatchListItemClick(match: Event) {
+        startActivity<DetailActivity>(
+                "MATCH_ID" to match.eventId,
+                "HOME_TEAM_ID" to match.homeTeamId,
+                "AWAY_TEAM_ID" to match.awayTeamId
+        )
 
     }
 

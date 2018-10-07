@@ -27,12 +27,14 @@ class DetailActivity: AppCompatActivity(), MatchDetailView, AppBarLayout.OnOffse
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
-        //setSupportActionBar(toolbar)
+        val matchId = intent.getStringExtra("MATCH_ID")
+        val homeTeamId = intent.getStringExtra("HOME_TEAM_ID")
+        val awayTeamId = intent.getStringExtra("AWAY_TEAM_ID")
 
-        presenter.getEventDetail(441613)
+        presenter.getEventDetail(matchId)
 
-        presenter.getTeamDetail(133602)
-        presenter.getTeamDetail(133614,false)
+        presenter.getTeamDetail(homeTeamId)
+        presenter.getTeamDetail(awayTeamId,false)
 
         appBar.addOnOffsetChangedListener(this)
     }
@@ -90,8 +92,16 @@ class DetailActivity: AppCompatActivity(), MatchDetailView, AppBarLayout.OnOffse
         tvMatchDateToolbar.text = match.eventDate?.formatDate()
 
         tvHomeTeamName.text = match.homeTeam
-        tvScore.text = match.homeScore + " - " + match.awayScore
-        tvScoreToolbar.text = match.homeScore + " - " + match.awayScore
+
+        if (match.homeScore === null) {
+            tvScore.text = "vs"
+            tvScoreToolbar.text = " vs "
+        }
+        else {
+            tvScore.text = match.homeScore + " - " + match.awayScore
+            tvScoreToolbar.text = match.homeScore + " - " + match.awayScore
+        }
+
         tvAwayTeamName.text = match.awayTeam
 
         tvHomeFormation.text = match.homeFormation

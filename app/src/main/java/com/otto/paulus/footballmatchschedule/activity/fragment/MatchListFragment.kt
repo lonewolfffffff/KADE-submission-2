@@ -19,11 +19,15 @@ import com.otto.paulus.footballmatchschedule.presenter.MatchListPresenter
 import com.otto.paulus.footballmatchschedule.util.*
 import com.otto.paulus.footballmatchschedule.view.MatchListView
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import org.jetbrains.anko.support.v4.onRefresh
+
+private const val ARG_LIST_PREV_MATCH = "prevMatch"
 
 class MatchListFragment : Fragment(),MatchListView, AnkoLogger {
     private val leagueId:Int = 4328
 
+    private var isPrevMatch: Boolean = true
     private var listener: OnFragmentInteractionListener? = null
 
     private var events: MutableList<Event> = mutableListOf()
@@ -37,36 +41,24 @@ class MatchListFragment : Fragment(),MatchListView, AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        arguments?.let {
+            isPrevMatch = it.getBoolean(ARG_LIST_PREV_MATCH)
+        }
         presenter = MatchListPresenter(this, ApiRepository(), Gson())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_matchlist, container, false)
-        val bottomNavigationView:BottomNavigationView = rootView.findViewById(R.id.navMatch)
-        bottomNavigationView.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener {item ->
-            when (item.itemId) {
-                R.id.navigate_prev_match -> {
-                    presenter.getLast15EventsList(leagueId)
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigate_next_match -> {
-                    presenter.getNext15EventsList(leagueId)
-                    return@OnNavigationItemSelectedListener true
-                }
-            }
-            return@OnNavigationItemSelectedListener false
-        })
 
         progressBar = rootView.findViewById(R.id.progressBar)
         swipeRefresh = rootView.findViewById(R.id.swipeRefreshLayout)
         swipeRefresh.onRefresh {
-
+            getEventsList()
         }
 
         adapter = MatchListAdapter(events) {
             val match = events.get(events.indexOf(it))
-            listener?.onMatchListFragmentInteraction(match.eventId);
+            listener?.onMatchListItemClick(match);
         }
         eventsList = rootView.findViewById(R.id.rvMatchList)
         eventsList.adapter = adapter
@@ -75,9 +67,18 @@ class MatchListFragment : Fragment(),MatchListView, AnkoLogger {
 
     }
 
+    private fun getEventsList() {
+        if(isPrevMatch) {
+            presenter.getLast15EventsList(leagueId)
+        }
+        else {
+            presenter.getNext15EventsList(leagueId)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.getLast15EventsList(leagueId)
+        getEventsList()
     }
 
     override fun onAttach(context: Context) {
@@ -110,11 +111,16 @@ class MatchListFragment : Fragment(),MatchListView, AnkoLogger {
     }
 
     interface OnFragmentInteractionListener {
-        fun onMatchListFragmentInteraction(matchId:String?)
+        fun onMatchListItemClick(match:Event)
     }
 
     companion object {
         @JvmStatic
-        fun newInstance() = MatchListFragment()
+        fun newInstance(isPrevMatch: Boolean) =
+                MatchListFragment().apply {
+                    arguments = Bundle().apply {
+                        putBoolean(ARG_LIST_PREV_MATCH, isPrevMatch)
+                    }
+                }
     }
 }

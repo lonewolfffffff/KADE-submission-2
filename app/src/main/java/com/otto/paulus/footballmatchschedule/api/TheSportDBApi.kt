@@ -30,7 +30,7 @@ object TheSportDBApi:AnkoLogger {
                 .toString()
     }
 
-    fun getEventDetail(eventId: Int?): String {
+    fun getEventDetail(eventId: String): String {
         return Uri.parse(BuildConfig.BASE_URL).buildUpon()
                 .appendPath("api")
                 .appendPath("v1")
@@ -42,7 +42,7 @@ object TheSportDBApi:AnkoLogger {
                 .toString()
     }
 
-    fun getTeamDetail(teamId: Int?): String {
+    fun getTeamDetail(teamId: String): String {
         return Uri.parse(BuildConfig.BASE_URL).buildUpon()
                 .appendPath("api")
                 .appendPath("v1")

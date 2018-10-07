@@ -8,13 +8,6 @@
     android:nestedScrollingEnabled="true"
     android:fitsSystemWindows="true">
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navMatch"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/navigation"/>
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"

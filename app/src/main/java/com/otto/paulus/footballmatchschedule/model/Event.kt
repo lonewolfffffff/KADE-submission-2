@@ -1,5 +1,6 @@
 package com.otto.paulus.footballmatchschedule.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 data class Event (

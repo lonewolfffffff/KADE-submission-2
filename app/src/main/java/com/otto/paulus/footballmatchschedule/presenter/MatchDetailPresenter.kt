@@ -15,7 +15,7 @@ import org.jetbrains.anko.uiThread
 class MatchDetailPresenter(private val view: MatchDetailView,
                            private val apiRepository: ApiRepository,
                            private val gson: Gson):AnkoLogger {
-    fun getEventDetail(eventId: Int) {
+    fun getEventDetail(eventId: String) {
         view.showLoading()
         doAsync {
             val data = gson.fromJson(apiRepository
@@ -30,7 +30,7 @@ class MatchDetailPresenter(private val view: MatchDetailView,
         }
     }
 
-    fun getTeamDetail(teamId: Int, isHomeTeam: Boolean=true) {
+    fun getTeamDetail(teamId: String, isHomeTeam: Boolean=true) {
         view.showLoading()
         doAsync {
             val data = gson.fromJson(apiRepository
